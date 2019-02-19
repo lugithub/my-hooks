@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useDebugValue
+} from 'react';
 import { interval } from 'rxjs';
 import logo from './logo.svg';
 import AppContext from './app-context';
@@ -13,11 +19,9 @@ function useInterval(callback, delay) {
 
   // Set up the interval.
   useEffect(() => {
-    function tick(count) {
-      savedCallback.current(count);
-    }
     if (delay !== null) {
-      const subscription = interval(delay).subscribe(tick);
+      const subscription = interval(delay).subscribe(savedCallback.current);
+
       return function() {
         console.log('unsub');
         subscription.unsubscribe();
@@ -47,6 +51,8 @@ function Counter() {
 
 function useMouse() {
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
+
+  useDebugValue(JSON.stringify(mouse));
 
   return [mouse, setMouse];
 }
