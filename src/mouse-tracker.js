@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { interval } from 'rxjs';
 import logo from './logo.svg';
+import AppContext from './app-context';
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -33,7 +34,15 @@ function Counter() {
     setCount(count);
   }, 1000);
 
-  return <h1>{count}</h1>;
+  useEffect(() => {
+    document.title = `You clicked ${count} times`;
+    return () => {
+      console.log('cleanup');
+    };
+  });
+
+  const { color } = useContext(AppContext);
+  return <h1 style={{ color }}>{count}</h1>;
 }
 
 function useMouse(rp) {
