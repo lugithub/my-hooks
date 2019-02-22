@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import useInterval from './use-interval';
+import useInterval from '../use-interval';
 
 jest.useFakeTimers();
 
