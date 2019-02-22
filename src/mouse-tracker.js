@@ -1,38 +1,7 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useContext,
-  useDebugValue
-} from 'react';
-import { interval } from 'rxjs';
-import { take } from 'rxjs/operators';
+import React, { useState, useEffect, useContext, useDebugValue } from 'react';
 import logo from './logo.svg';
 import AppContext from './app-context';
-
-function useInterval(callback, delay) {
-  const savedCallback = useRef();
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  });
-
-  useEffect(() => {
-    if (delay !== null) {
-      function intervalCallback(v) {
-        savedCallback.current(v);
-      }
-      const subscription = interval(delay)
-        .pipe(take(10))
-        .subscribe(intervalCallback);
-
-      return function() {
-        console.log('unsub');
-        subscription.unsubscribe();
-      };
-    }
-  }, [delay]);
-}
+import useInterval from './use-interval';
 
 function Counter() {
   let [count, setCount] = useState(0);
