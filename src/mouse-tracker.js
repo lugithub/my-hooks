@@ -6,21 +6,25 @@ import React, {
   useDebugValue
 } from 'react';
 import { interval } from 'rxjs';
+import { take } from 'rxjs/operators';
 import logo from './logo.svg';
 import AppContext from './app-context';
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
 
-  // Remember the latest callback.
   useEffect(() => {
     savedCallback.current = callback;
   });
 
-  // Set up the interval.
   useEffect(() => {
     if (delay !== null) {
-      const subscription = interval(delay).subscribe(savedCallback.current);
+      function intervalCallback(v) {
+        savedCallback.current(v);
+      }
+      const subscription = interval(delay)
+        .pipe(take(10))
+        .subscribe(intervalCallback);
 
       return function() {
         console.log('unsub');
@@ -33,10 +37,19 @@ function useInterval(callback, delay) {
 function Counter() {
   let [count, setCount] = useState(0);
 
-  useInterval(count => {
-    // Your custom logic here
-    setCount(count);
-  }, 1000);
+  let callback = null;
+  if (count % 2 === 0) {
+    callback = v => {
+      console.log(`even callback, current state:${count}, next state: ${v}`);
+      setCount(v);
+    };
+  } else {
+    callback = v => {
+      console.log(`odd callback, current state:${count}, next state: ${v}`);
+      setCount(v);
+    };
+  }
+  useInterval(callback, 1000);
 
   useEffect(() => {
     document.title = `You clicked ${count} times`;
