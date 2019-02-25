@@ -6,6 +6,10 @@ import useLocation from './use-location';
 import Counter from './counter';
 import './App.css';
 
+function Apple() {
+  return <h1>apple</h1>;
+}
+
 function App() {
   const [showCounter, setShowCounter] = useState(true);
   const [color, setColor] = useState('red');
@@ -28,13 +32,14 @@ function App() {
       </div>
 
       <Route path="/mouse-tracker">
-        {({ match }) =>
+        {({ match, location, history }) =>
           match && (
             <Fragment>
               <ColorContext.Provider value={color}>
                 <MouseTracker showCounter={showCounter} />
               </ColorContext.Provider>
 
+              <Route path={`${match.url}/apple`} component={Apple} />
               <button onClick={() => setShowCounter(!showCounter)}>
                 toggle showCounter
               </button>
