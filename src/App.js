@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import ColorContext from './color-context';
 import MouseTracker from './mouse-tracker';
 import useLocation from './use-location';
@@ -35,22 +35,31 @@ function App() {
         {({ match, location, history }) =>
           match && (
             <Fragment>
-              <ColorContext.Provider value={color}>
-                <MouseTracker showCounter={showCounter} />
-              </ColorContext.Provider>
+              <Switch>
+                <Route path={`${match.url}/apple`} component={Apple} />
+                <Route>
+                  {({ match }) =>
+                    match && (
+                      <ColorContext.Provider value={color}>
+                        <MouseTracker showCounter={showCounter} />
+                        <button onClick={() => setShowCounter(!showCounter)}>
+                          toggle showCounter
+                        </button>
 
-              <Route path={`${match.url}/apple`} component={Apple} />
-              <button onClick={() => setShowCounter(!showCounter)}>
-                toggle showCounter
-              </button>
-
-              <button
-                onClick={() => {
-                  setColor(prev => (prev === 'red' ? 'green' : 'red'));
-                }}
-              >
-                toggle theme
-              </button>
+                        <button
+                          onClick={() => {
+                            setColor(prev =>
+                              prev === 'red' ? 'green' : 'red'
+                            );
+                          }}
+                        >
+                          toggle theme
+                        </button>
+                      </ColorContext.Provider>
+                    )
+                  }
+                </Route>
+              </Switch>
             </Fragment>
           )
         }
