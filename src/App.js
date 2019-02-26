@@ -1,5 +1,5 @@
-import React, { useState, Fragment } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import React, { useState, Fragment, memo } from 'react';
+import { Link, Route, Switch, withRouter } from 'react-router-dom';
 import ColorContext from './color-context';
 import MouseTracker from './mouse-tracker';
 import useLocation from './use-location';
@@ -68,4 +68,4 @@ function App() {
   );
 }
 
-export default App;
+export default memo(App);
