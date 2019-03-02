@@ -1,5 +1,5 @@
 import React, { useState, Fragment, memo } from 'react';
-import { Link, Route, Switch, withRouter } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import ColorContext from './color-context';
 import MouseTracker from './mouse-tracker';
 import useLocation from './use-location';
@@ -13,7 +13,6 @@ function Apple() {
 function App() {
   const [showCounter, setShowCounter] = useState(true);
   const [color, setColor] = useState('red');
-
   const location = useLocation();
 
   return (
